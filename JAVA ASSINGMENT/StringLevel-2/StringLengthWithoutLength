@@ -1,0 +1,32 @@
+import java.util.Scanner;
+
+public class StringLengthWithoutLength {
+
+    static int getLength(String text) {
+        int count = 0;
+        while (true) {
+            try {
+                text.charAt(count);
+                count++;
+            } catch (StringIndexOutOfBoundsException e) {
+                break;
+            }
+        }
+        return count;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter text: ");
+        String text = sc.next();
+
+        int userLen = getLength(text);
+        int builtLen = text.length();
+
+        System.out.println("User-defined length: " + userLen);
+        System.out.println("Built-in length(): " + builtLen);
+
+        sc.close();
+    }
+}

@@ -1,0 +1,26 @@
+import java.util.Scanner;
+
+public class AgeVotingCheck {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int[] ages = new int[10];
+
+        System.out.println("Enter ages:");
+        for (int i = 0; i < ages.length; i++) {
+            System.out.print("Age " + (i + 1) + ": ");
+            ages[i] = scanner.nextInt();
+        }
+
+        for (int age : ages) {
+            if (age < 0) {
+                System.out.println("Invalid: " + age);
+            } else if (age >= 18) {
+                System.out.println("Can vote: " + age);
+            } else {
+                System.out.println("Cannot vote: " + age);
+            }
+        }
+
+        scanner.close();
+    }
+}

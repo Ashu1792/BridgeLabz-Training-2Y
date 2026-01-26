@@ -1,0 +1,79 @@
+import java.util.Scanner;
+
+public class TeamBMICalculator {
+
+    static String getBMIStatus(double bmi) {
+        if (bmi <= 18.4) return "Underweight";
+        else if (bmi <= 24.9) return "Normal";
+        else if (bmi <= 39.9) return "Overweight";
+        else return "Obese";
+    }
+
+    static String[][] calculateBMIAndStatus(double weightKg, double heightCm) {
+        double heightM = heightCm / 100.0;
+        double bmi = weightKg / (heightM * heightM);
+        bmi = Math.round(bmi * 100.0) / 100.0;
+
+        String[][] result = new String[1][2];
+        result[0][0] = String.valueOf(bmi);
+        result[0][1] = getBMIStatus(bmi);
+
+        return result;
+    }
+
+    static String[][] createReport(double[][] data) {
+        String[][] report = new String[10][4];
+
+        for (int i = 0; i < 10; i++) {
+            double weight = data[i][0];
+            double heightCm = data[i][1];
+
+            String[][] bmiData = calculateBMIAndStatus(weight, heightCm);
+
+            report[i][0] = String.valueOf(heightCm);
+            report[i][1] = String.valueOf(weight);
+            report[i][2] = bmiData[0][0];
+            report[i][3] = bmiData[0][1];
+        }
+
+        return report;
+    }
+
+    static void displayReport(String[][] report) {
+        System.out.println("\n------------------- BMI REPORT -------------------");
+        System.out.printf("%-10s %-15s %-15s %-10s %-15s\n",
+                "Person", "Height(cm)", "Weight(kg)", "BMI", "Status");
+        System.out.println("--------------------------------------------------");
+
+        for (int i = 0; i < 10; i++) {
+            System.out.printf("%-10d %-15s %-15s %-10s %-15s\n",
+                    (i + 1),
+                    report[i][0],
+                    report[i][1],
+                    report[i][2],
+                    report[i][3]);
+        }
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        double[][] personData = new double[10][2];
+
+        for (int i = 0; i < 10; i++) {
+            System.out.println("\nEnter details of Person " + (i + 1));
+
+            System.out.print("Enter weight (kg): ");
+            personData[i][0] = sc.nextDouble();
+
+            System.out.print("Enter height (cm): ");
+            personData[i][1] = sc.nextDouble();
+        }
+
+        String[][] report = createReport(personData);
+        displayReport(report);
+
+        sc.close();
+    }
+}

@@ -1,0 +1,60 @@
+import java.util.Scanner;
+
+public class CharFrequencyASCII {
+
+    static String[][] frequencyTable(String text) {
+        int[] freq = new int[256];
+
+        for (int i = 0; i < text.length(); i++) {
+            freq[text.charAt(i)]++;
+        }
+
+        int count = 0;
+        for (int i = 0; i < text.length(); i++) {
+            if (freq[text.charAt(i)] > 0) {
+                count++;
+                freq[text.charAt(i)] = -freq[text.charAt(i)];
+            }
+        }
+
+        for (int i = 0; i < 256; i++) {
+            if (freq[i] < 0) freq[i] = -freq[i];
+        }
+
+        String[][] result = new String[count][2];
+        int idx = 0;
+
+        boolean[] visited = new boolean[256];
+
+        for (int i = 0; i < text.length(); i++) {
+            char ch = text.charAt(i);
+            if (!visited[ch]) {
+                visited[ch] = true;
+                result[idx][0] = String.valueOf(ch);
+                result[idx][1] = String.valueOf(freq[ch]);
+                idx++;
+            }
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter text: ");
+        String text = sc.nextLine();
+
+        String[][] table = frequencyTable(text);
+
+        System.out.println("\nCharacter Frequency:");
+        System.out.printf("%-10s %-10s\n", "Char", "Count");
+        System.out.println("--------------------");
+
+        for (int i = 0; i < table.length; i++) {
+            System.out.printf("%-10s %-10s\n", table[i][0], table[i][1]);
+        }
+
+        sc.close();
+    }
+}

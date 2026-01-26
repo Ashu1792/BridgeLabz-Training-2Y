@@ -1,0 +1,97 @@
+import java.util.Scanner;
+
+public class SplitWithoutSplit {
+
+    static int getLength(String text) {
+        int count = 0;
+        while (true) {
+            try {
+                text.charAt(count);
+                count++;
+            } catch (StringIndexOutOfBoundsException e) {
+                break;
+            }
+        }
+        return count;
+    }
+
+    static String[] splitWordsUsingCharAt(String text) {
+
+        int len = getLength(text);
+
+        int wordCount = 0;
+        boolean inWord = false;
+
+        for (int i = 0; i < len; i++) {
+            char ch = text.charAt(i);
+            if (ch != ' ' && !inWord) {
+                wordCount++;
+                inWord = true;
+            } else if (ch == ' ') {
+                inWord = false;
+            }
+        }
+
+        int[] spaceIndex = new int[wordCount + 1];
+        int idx = 0;
+        spaceIndex[idx++] = -1;
+
+        for (int i = 0; i < len; i++) {
+            if (text.charAt(i) == ' ') {
+                spaceIndex[idx++] = i;
+            }
+        }
+        spaceIndex[idx] = len;
+
+        String[] words = new String[wordCount];
+        int w = 0;
+
+        for (int i = 0; i < spaceIndex.length - 1; i++) {
+            int start = spaceIndex[i] + 1;
+            int end = spaceIndex[i + 1];
+
+            while (start < end && text.charAt(start) == ' ') start++;
+            while (end > start && text.charAt(end - 1) == ' ') end--;
+
+            if (start < end) {
+                String word = "";
+                for (int k = start; k < end; k++) word += text.charAt(k);
+                words[w++] = word;
+            }
+        }
+
+        String[] finalWords = new String[w];
+        for (int i = 0; i < w; i++) finalWords[i] = words[i];
+
+        return finalWords;
+    }
+
+    static boolean compareStringArrays(String[] a, String[] b) {
+        if (a.length != b.length) return false;
+        for (int i = 0; i < a.length; i++) {
+            if (!a[i].equals(b[i])) return false;
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter text: ");
+        String text = sc.nextLine();
+
+        String[] userWords = splitWordsUsingCharAt(text);
+        String[] builtWords = text.trim().split("\\s+");
+
+        System.out.println("User-defined split words:");
+        for (String w : userWords) System.out.println(w);
+
+        System.out.println("Built-in split words:");
+        for (String w : builtWords) System.out.println(w);
+
+        System.out.println("Both arrays same? " + compareStringArrays(userWords, builtWords));
+
+        sc.close();
+    }
+}

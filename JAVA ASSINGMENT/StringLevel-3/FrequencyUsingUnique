@@ -1,0 +1,67 @@
+import java.util.Scanner;
+
+public class FrequencyUsingUnique {
+
+    static char[] uniqueCharacters(String text) {
+        char[] temp = new char[text.length()];
+        int uniqueCount = 0;
+
+        for (int i = 0; i < text.length(); i++) {
+            char current = text.charAt(i);
+            boolean isUnique = true;
+
+            for (int j = 0; j < i; j++) {
+                if (text.charAt(j) == current) {
+                    isUnique = false;
+                    break;
+                }
+            }
+
+            if (isUnique) {
+                temp[uniqueCount++] = current;
+            }
+        }
+
+        char[] result = new char[uniqueCount];
+        for (int i = 0; i < uniqueCount; i++) result[i] = temp[i];
+        return result;
+    }
+
+    static String[][] frequencyUsingUnique(String text) {
+        int[] freq = new int[256];
+
+        for (int i = 0; i < text.length(); i++) {
+            freq[text.charAt(i)]++;
+        }
+
+        char[] unique = uniqueCharacters(text);
+
+        String[][] result = new String[unique.length][2];
+
+        for (int i = 0; i < unique.length; i++) {
+            result[i][0] = String.valueOf(unique[i]);
+            result[i][1] = String.valueOf(freq[unique[i]]);
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter text: ");
+        String text = sc.nextLine();
+
+        String[][] table = frequencyUsingUnique(text);
+
+        System.out.println("\nCharacter Frequency:");
+        System.out.printf("%-10s %-10s\n", "Char", "Count");
+        System.out.println("--------------------");
+
+        for (int i = 0; i < table.length; i++) {
+            System.out.printf("%-10s %-10s\n", table[i][0], table[i][1]);
+        }
+
+        sc.close();
+    }
+}

@@ -1,0 +1,85 @@
+import java.util.Scanner;
+
+public class WordsWithLength2D {
+
+    static int getLength(String text) {
+        int count = 0;
+        while (true) {
+            try {
+                text.charAt(count);
+                count++;
+            } catch (Exception e) {
+                break;
+            }
+        }
+        return count;
+    }
+
+    static String[] splitWordsUsingCharAt(String text) {
+        text = text.trim();
+        int len = getLength(text);
+
+        int wordCount = 0;
+        boolean inWord = false;
+
+        for (int i = 0; i < len; i++) {
+            char ch = text.charAt(i);
+            if (ch != ' ' && !inWord) {
+                wordCount++;
+                inWord = true;
+            } else if (ch == ' ') {
+                inWord = false;
+            }
+        }
+
+        String[] words = new String[wordCount];
+        int index = 0;
+
+        int start = 0;
+        for (int i = 0; i <= len; i++) {
+            if (i == len || text.charAt(i) == ' ') {
+                if (start < i) {
+                    String word = "";
+                    for (int k = start; k < i; k++) word += text.charAt(k);
+                    words[index++] = word;
+                }
+                start = i + 1;
+            }
+        }
+        return words;
+    }
+
+    static String[][] wordAndLength2D(String[] words) {
+        String[][] result = new String[words.length][2];
+
+        for (int i = 0; i < words.length; i++) {
+            result[i][0] = words[i];
+            result[i][1] = String.valueOf(getLength(words[i]));
+        }
+        return result;
+    }
+
+    static void display2D(String[][] arr) {
+        System.out.printf("%-20s %-10s\n", "Word", "Length");
+        System.out.println("------------------------------");
+        for (int i = 0; i < arr.length; i++) {
+            int len = Integer.parseInt(arr[i][1]);
+            System.out.printf("%-20s %-10d\n", arr[i][0], len);
+        }
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter text: ");
+        String text = sc.nextLine();
+
+        String[] words = splitWordsUsingCharAt(text);
+        String[][] data = wordAndLength2D(words);
+
+        display2D(data);
+
+        sc.close();
+    }
+}

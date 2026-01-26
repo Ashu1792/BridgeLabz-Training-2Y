@@ -1,0 +1,88 @@
+import java.util.Scanner;
+
+public class StudentScoreCard {
+
+    static int[][] generateRandomScores(int students) {
+        int[][] pcm = new int[students][3];
+
+        for (int i = 0; i < students; i++) {
+            pcm[i][0] = 10 + (int)(Math.random() * 91); 
+            pcm[i][1] = 10 + (int)(Math.random() * 91);
+            pcm[i][2] = 10 + (int)(Math.random() * 91);
+        }
+        return pcm;
+    }
+
+    static double round2(double value) {
+        return Math.round(value * 100.0) / 100.0;
+    }
+
+    static double[][] calculateTotalAveragePercentage(int[][] pcm) {
+        double[][] calc = new double[pcm.length][3];
+
+        for (int i = 0; i < pcm.length; i++) {
+            int total = pcm[i][0] + pcm[i][1] + pcm[i][2];
+            double avg = total / 3.0;
+            double percent = (total / 300.0) * 100;
+
+            calc[i][0] = total;
+            calc[i][1] = round2(avg);
+            calc[i][2] = round2(percent);
+        }
+        return calc;
+    }
+
+    static String[] calculateGrades(double[][] calc) {
+        String[] grade = new String[calc.length];
+
+        for (int i = 0; i < calc.length; i++) {
+            double percent = calc[i][2];
+
+            if (percent >= 80) grade[i] = "A";
+            else if (percent >= 70) grade[i] = "B";
+            else if (percent >= 60) grade[i] = "C";
+            else if (percent >= 50) grade[i] = "D";
+            else if (percent >= 40) grade[i] = "E";
+            else grade[i] = "R";
+        }
+
+        return grade;
+    }
+
+    static void displayScoreCard(int[][] pcm, double[][] calc, String[] grade) {
+
+        System.out.println("\n---------------------- SCORECARD ----------------------");
+        System.out.printf("%-10s %-10s %-12s %-10s %-10s %-10s %-12s %-10s\n",
+                "Student", "Physics", "Chemistry", "Maths", "Total", "Average", "Percent", "Grade");
+        System.out.println("--------------------------------------------------------");
+
+        for (int i = 0; i < pcm.length; i++) {
+            System.out.printf("%-10d %-10d %-12d %-10d %-10.0f %-10.2f %-12.2f %-10s\n",
+                    (i + 1),
+                    pcm[i][0],
+                    pcm[i][1],
+                    pcm[i][2],
+                    calc[i][0],
+                    calc[i][1],
+                    calc[i][2],
+                    grade[i]
+            );
+        }
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter number of students: ");
+        int students = sc.nextInt();
+
+        int[][] pcmScores = generateRandomScores(students);
+        double[][] calcData = calculateTotalAveragePercentage(pcmScores);
+        String[] grades = calculateGrades(calcData);
+
+        displayScoreCard(pcmScores, calcData, grades);
+
+        sc.close();
+    }
+}
